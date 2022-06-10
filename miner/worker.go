@@ -1120,7 +1120,6 @@ func (w *worker) commitWork(interrupt *int32, noempty bool, timestamp int64) {
 	if err != nil {
 		return
 	}
-<<<<<<< HEAD
 	// Create an empty block based on temporary copied state for
 	// sealing in advance without waiting block execution finished.
 	if !noempty && atomic.LoadUint32(&w.noempty) == 0 {
@@ -1148,8 +1147,6 @@ func (w *worker) commitWork(interrupt *int32, noempty bool, timestamp int64) {
 // Note the assumption is held that the mutation is allowed to the passed env, do
 // the deep copy first.
 func (w *worker) commit(env *environment, interval func(), update bool, start time.Time) error {
-	if w.isRunning() {
-=======
 	if tr := w.current.original.GetTrie(); tr.IsVerkle() {
 		vtr := tr.(*trie.VerkleTrie)
 		keys := s.Witness().Keys()
@@ -1170,8 +1167,8 @@ func (w *worker) commit(env *environment, interval func(), update bool, start ti
 		}
 		block.SetVerkleProof(p, k)
 	}
+
 	if w.isRunning() && !w.merger.TDDReached() {
->>>>>>> origin/verkle-trie-proof-in-block-rebased
 		if interval != nil {
 			interval()
 		}

@@ -55,15 +55,16 @@ func (bits bitvec) set16(pos uint64) {
 	bits[pos/8+2] = ^a
 }
 
-<<<<<<< HEAD
+// merging obth codeSegment and IsCode
+
 // codeSegment checks if the position is in a code segment.
 func (bits *bitvec) codeSegment(pos uint64) bool {
 	return (((*bits)[pos/8] >> (pos % 8)) & 1) == 0
-=======
+}
+
 // IsCode checks if the position is in a code segment.
 func (bits *bitvec) IsCode(pos uint64) bool {
 	return ((*bits)[pos/8] & (0x80 >> (pos % 8))) == 0
->>>>>>> origin/verkle-trie-proof-in-block-rebased
 }
 
 // codeBitmap collects data locations in code.
