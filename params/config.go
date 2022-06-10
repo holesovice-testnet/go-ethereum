@@ -92,7 +92,7 @@ var (
 		MuirGlacierBlock:    big.NewInt(0),
 		BerlinBlock:         big.NewInt(0),
 		LondonBlock:         big.NewInt(0),
-		CancunBlock:         big.NewInt(0),
+		// CancunBlock:         big.NewInt(0),
 		Ethash:              new(EthashConfig),
 	}
 
@@ -378,7 +378,7 @@ type ChainConfig struct {
 	LondonBlock         *big.Int `json:"londonBlock,omitempty"`         // London switch block (nil = no fork, 0 = already on london)
 	ArrowGlacierBlock   *big.Int `json:"arrowGlacierBlock,omitempty"`   // Eip-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
 	MergeNetsplitBlock  *big.Int `json:"mergeNetsplitBlock,omitempty"`  // Virtual fork after The Merge to use as a network splitter
-	CancunBlock         *big.Int `json:"cancunBlock,omitempty"`
+	// CancunBlock         *big.Int `json:"cancunBlock,omitempty"`
 
 	// TerminalTotalDifficulty is the amount of total difficulty reached by
 	// the network that triggers the consensus upgrade.
@@ -514,9 +514,9 @@ func (c *ChainConfig) IsMuirGlacier(num *big.Int) bool {
 	return isForked(c.MuirGlacierBlock, num)
 }
 
-func (c *ChainConfig) IsCancun(num *big.Int) bool {
-	return isForked(c.CancunBlock, num)
-}
+// func (c *ChainConfig) IsCancun(num *big.Int) bool {
+// 	return isForked(c.CancunBlock, num)
+// }
 
 // IsPetersburg returns whether num is either
 // - equal to or greater than the PetersburgBlock fork block,
@@ -760,6 +760,6 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool) Rules {
 		IsBerlin:         c.IsBerlin(num),
 		IsLondon:         c.IsLondon(num),
 		IsMerge:          isMerge,
-		IsCancun:         c.IsCancun(num),
+		// IsCancun:         c.IsCancun(num),
 	}
 }
