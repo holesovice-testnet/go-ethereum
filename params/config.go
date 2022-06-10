@@ -76,6 +76,26 @@ var (
 		Ethash:              new(EthashConfig),
 	}
 
+	VerkleChainConfig = &ChainConfig{
+		ChainID:             big.NewInt(86),
+		HomesteadBlock:      big.NewInt(0),
+		DAOForkBlock:        big.NewInt(0),
+		DAOForkSupport:      true,
+		EIP150Block:         big.NewInt(0),
+		EIP150Hash:          common.HexToHash("0x2086799aeebeae135c246c65021c82b4e15a2c451340993aacfd2751886514f0"),
+		EIP155Block:         big.NewInt(0),
+		EIP158Block:         big.NewInt(0),
+		ByzantiumBlock:      big.NewInt(0),
+		ConstantinopleBlock: big.NewInt(0),
+		PetersburgBlock:     big.NewInt(0),
+		IstanbulBlock:       big.NewInt(0),
+		MuirGlacierBlock:    big.NewInt(0),
+		BerlinBlock:         big.NewInt(0),
+		LondonBlock:         big.NewInt(0),
+		CancunBlock:         big.NewInt(0),
+		Ethash:              new(EthashConfig),
+	}
+
 	// MainnetTrustedCheckpoint contains the light client trusted checkpoint for the main network.
 	MainnetTrustedCheckpoint = &TrustedCheckpoint{
 		SectionIndex: 451,
@@ -357,7 +377,11 @@ type ChainConfig struct {
 	BerlinBlock         *big.Int `json:"berlinBlock,omitempty"`         // Berlin switch block (nil = no fork, 0 = already on berlin)
 	LondonBlock         *big.Int `json:"londonBlock,omitempty"`         // London switch block (nil = no fork, 0 = already on london)
 	ArrowGlacierBlock   *big.Int `json:"arrowGlacierBlock,omitempty"`   // Eip-4345 (bomb delay) switch block (nil = no fork, 0 = already activated)
+<<<<<<< HEAD
 	MergeNetsplitBlock  *big.Int `json:"mergeNetsplitBlock,omitempty"`  // Virtual fork after The Merge to use as a network splitter
+=======
+	CancunBlock         *big.Int `json:"cancunBlock,omitempty"`
+>>>>>>> origin/verkle-trie-proof-in-block-rebased
 
 	// TerminalTotalDifficulty is the amount of total difficulty reached by
 	// the network that triggers the consensus upgrade.
@@ -411,6 +435,7 @@ func (c *ChainConfig) String() string {
 			banner += "Consensus: Beacon (proof-of-stake), merged from Clique (proof-of-authority)\n"
 		}
 	default:
+<<<<<<< HEAD
 		banner += "Consensus: unknown\n"
 	}
 	banner += "\n"
@@ -451,6 +476,29 @@ func (c *ChainConfig) String() string {
 		banner += fmt.Sprintf(" - Merge netsplit block:      %-8v", c.MergeNetsplitBlock)
 	}
 	return banner
+=======
+		engine = "unknown"
+	}
+	return fmt.Sprintf("{ChainID: %v Homestead: %v DAO: %v DAOSupport: %v EIP150: %v EIP155: %v EIP158: %v Byzantium: %v Constantinople: %v Petersburg: %v Istanbul: %v, Muir Glacier: %v, Berlin: %v, London: %v, Arrow Glacier: %v, Cancun: %v, Engine: %v}",
+		c.ChainID,
+		c.HomesteadBlock,
+		c.DAOForkBlock,
+		c.DAOForkSupport,
+		c.EIP150Block,
+		c.EIP155Block,
+		c.EIP158Block,
+		c.ByzantiumBlock,
+		c.ConstantinopleBlock,
+		c.PetersburgBlock,
+		c.IstanbulBlock,
+		c.MuirGlacierBlock,
+		c.BerlinBlock,
+		c.LondonBlock,
+		c.ArrowGlacierBlock,
+		c.CancunBlock,
+		engine,
+	)
+>>>>>>> origin/verkle-trie-proof-in-block-rebased
 }
 
 // IsHomestead returns whether num is either equal to the homestead block or greater.
@@ -491,6 +539,10 @@ func (c *ChainConfig) IsConstantinople(num *big.Int) bool {
 // IsMuirGlacier returns whether num is either equal to the Muir Glacier (EIP-2384) fork block or greater.
 func (c *ChainConfig) IsMuirGlacier(num *big.Int) bool {
 	return isForked(c.MuirGlacierBlock, num)
+}
+
+func (c *ChainConfig) IsCancun(num *big.Int) bool {
+	return isForked(c.CancunBlock, num)
 }
 
 // IsPetersburg returns whether num is either
@@ -712,8 +764,12 @@ type Rules struct {
 	ChainID                                                 *big.Int
 	IsHomestead, IsEIP150, IsEIP155, IsEIP158               bool
 	IsByzantium, IsConstantinople, IsPetersburg, IsIstanbul bool
+<<<<<<< HEAD
 	IsBerlin, IsLondon                                      bool
 	IsMerge                                                 bool
+=======
+	IsBerlin, IsLondon, IsCancun                            bool
+>>>>>>> origin/verkle-trie-proof-in-block-rebased
 }
 
 // Rules ensures c's ChainID is not nil.
@@ -734,6 +790,10 @@ func (c *ChainConfig) Rules(num *big.Int, isMerge bool) Rules {
 		IsIstanbul:       c.IsIstanbul(num),
 		IsBerlin:         c.IsBerlin(num),
 		IsLondon:         c.IsLondon(num),
+<<<<<<< HEAD
 		IsMerge:          isMerge,
+=======
+		IsCancun:         c.IsCancun(num),
+>>>>>>> origin/verkle-trie-proof-in-block-rebased
 	}
 }
