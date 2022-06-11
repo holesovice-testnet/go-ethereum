@@ -1,3 +1,8 @@
+## Holesovice testnet
+
+Rebase of verkle trie enabled geth (https://github.com/gballet/go-ethereum) to a latest master.
+Curently PoW can be run and blocks are produced, txs are working. However verkle data is not saved into database (issue with encoding).
+
 ## Go Ethereum
 
 Official Golang implementation of the Ethereum protocol.
