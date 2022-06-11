@@ -5,6 +5,12 @@ Curently PoW can be run and blocks are produced, txs are being confirmed. Verkle
 
 *ToDo*: Switch `selfDestruct` to `send`
 
+To run:
+1. Build geth: `make geth`
+2. Edit `genesis.json` with list of genesys addresses and alocations
+3. Generate genesis: `build/bin/geth init genesis.json --datadir=[DATA_DIR]`
+4. Run miner: `build/bin/geth --mine --miner.etherbase=[ADDRESS] --miner.threads=1 --datadir=[DATA_DIR] --http --http.api=net,eth --http.corsdomain=* --http.vhosts=*`
+
 ## Go Ethereum
 
 Official Golang implementation of the Ethereum protocol.
