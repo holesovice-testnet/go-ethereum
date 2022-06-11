@@ -1,7 +1,9 @@
 ## Holesovice testnet
 
 Rebase of verkle trie enabled geth (https://github.com/gballet/go-ethereum) to a latest master.
-Curently PoW can be run and blocks are produced, txs are working. However verkle data is not saved into database (issue with encoding).
+Curently PoW can be run and blocks are produced, txs are being confirmed. Verkle data is added to blocks
+
+*ToDo*: Switch `selfDestruct` to `send`
 
 ## Go Ethereum
 
