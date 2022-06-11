@@ -1147,6 +1147,16 @@ func (w *worker) commitWork(interrupt *int32, noempty bool, timestamp int64) {
 // Note the assumption is held that the mutation is allowed to the passed env, do
 // the deep copy first.
 func (w *worker) commit(env *environment, interval func(), update bool, start time.Time) error {
+	// Deep copy receipts here to avoid interaction between different tasks.
+	//receipts := copyReceipts(w.current.receipts)
+	s := w.current.state.Copy()
+	//block, err := w.engine.FinalizeAndAssemble(w.chain, w.current.header, s, w.current.txs, uncles, receipts)
+	e := env.copy()
+	block, err := w.engine.FinalizeAndAssemble(w.chain, e.header, e.state, e.txs, e.unclelist(), e.receipts)
+	if err != nil {
+		return err
+	}
+
 	if tr := w.current.original.GetTrie(); tr.IsVerkle() {
 		vtr := tr.(*trie.VerkleTrie)
 		keys := s.Witness().Keys()
@@ -1168,25 +1178,25 @@ func (w *worker) commit(env *environment, interval func(), update bool, start ti
 		block.SetVerkleProof(p, k)
 	}
 
-	if w.isRunning() && !w.merger.TDDReached() {
+	if w.isRunning() {
 		if interval != nil {
 			interval()
 		}
 		// Create a local environment copy, avoid the data race with snapshot state.
 		// https://github.com/ethereum/go-ethereum/issues/24299
-		env := env.copy()
-		block, err := w.engine.FinalizeAndAssemble(w.chain, env.header, env.state, env.txs, env.unclelist(), env.receipts)
+		//env := env.copy()
+		//block, err := w.engine.FinalizeAndAssemble(w.chain, env.header, env.state, env.txs, env.unclelist(), env.receipts)
 		if err != nil {
 			return err
 		}
 		// If we're post merge, just ignore
 		if !w.isTTDReached(block.Header()) {
 			select {
-			case w.taskCh <- &task{receipts: env.receipts, state: env.state, block: block, createdAt: time.Now()}:
+			case w.taskCh <- &task{receipts: e.receipts, state: e.state, block: block, createdAt: time.Now()}:
 				w.unconfirmed.Shift(block.NumberU64() - 1)
 				log.Info("Commit new sealing work", "number", block.Number(), "sealhash", w.engine.SealHash(block.Header()),
-					"uncles", len(env.uncles), "txs", env.tcount,
-					"gas", block.GasUsed(), "fees", totalFees(block, env.receipts),
+					"uncles", len(e.uncles), "txs", e.tcount,
+					"gas", block.GasUsed(), "fees", totalFees(block, e.receipts),
 					"elapsed", common.PrettyDuration(time.Since(start)))
 
 			case <-w.exitCh:

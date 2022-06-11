@@ -200,8 +200,12 @@ func (it *verkleNodeIterator) LeafProof() [][]byte {
 // Before adding a similar mechanism to any other place in Geth, consider
 // making trie.Database an interface and wrapping at that level. It's a huge
 // refactor, but it could be worth it if another occurrence arises.
-func (it *verkleNodeIterator) AddResolver(ethdb.KeyValueStore) {
+func (it *verkleNodeIterator) AddResolver(ethdb.KeyValueReader) {
 	panic("not completely implemented")
+}
+
+func (it *verkleNodeIterator) NodeBlob() []byte {
+	return nil
 }
 
 type dummy struct{}
