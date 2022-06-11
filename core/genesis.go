@@ -83,7 +83,8 @@ func (ga *GenesisAlloc) UnmarshalJSON(data []byte) error {
 // flush adds allocated genesis accounts into a fresh new statedb and
 // commit the state changes into the given database handler.
 func (ga *GenesisAlloc) flush(db ethdb.Database) (common.Hash, error) {
-	statedb, err := state.New(common.Hash{}, state.NewDatabase(db), nil)
+	//statedb, err := state.New(common.Hash{}, state.NewDatabase(db), nil)
+	statedb, err := state.New(common.Hash{}, state.NewDatabaseWithConfig(db, &trie.Config{UseVerkle: true}), nil)
 	if err != nil {
 		return common.Hash{}, err
 	}
@@ -102,6 +103,9 @@ func (ga *GenesisAlloc) flush(db ethdb.Database) (common.Hash, error) {
 	err = statedb.Database().TrieDB().Commit(root, true, nil)
 	if err != nil {
 		return common.Hash{}, err
+	}
+	if err := statedb.Cap(root); err != nil {
+		panic(err)
 	}
 	return root, nil
 }
@@ -370,11 +374,12 @@ func (g *Genesis) ToBlock(db ethdb.Database) *types.Block {
 	if err != nil {
 		panic(err)
 	}
-	var trieCfg *trie.Config
+	/*var trieCfg *trie.Config
 	if g.Config != nil {
 		trieCfg = &trie.Config{UseVerkle: g.Config.IsCancun(big.NewInt(int64(g.Number)))}
-	}
-	statedb, err := state.New(common.Hash{}, state.NewDatabaseWithConfig(db, trieCfg), nil)
+	}*/
+	//statedb, err := state.New(common.Hash{}, state.NewDatabaseWithConfig(db, trieCfg), nil)
+
 	head := &types.Header{
 		Number:     new(big.Int).SetUint64(g.Number),
 		Nonce:      types.EncodeNonce(g.Nonce),
@@ -402,11 +407,11 @@ func (g *Genesis) ToBlock(db ethdb.Database) *types.Block {
 			head.BaseFee = new(big.Int).SetUint64(params.InitialBaseFee)
 		}
 	}
-	statedb.Commit(false)
+	/*commitRoot, commitErr := statedb.Commit(false)
 	statedb.Database().TrieDB().Commit(root, true, nil)
 	if err := statedb.Cap(root); err != nil {
 		panic(err)
-	}
+	}*/
 
 	return types.NewBlock(head, nil, nil, nil, trie.NewStackTrie(nil))
 }

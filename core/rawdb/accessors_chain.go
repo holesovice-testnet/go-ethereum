@@ -377,6 +377,7 @@ func HasHeader(db ethdb.Reader, hash common.Hash, number uint64) bool {
 // ReadHeader retrieves the block header corresponding to the hash.
 func ReadHeader(db ethdb.Reader, hash common.Hash, number uint64) *types.Header {
 	data := ReadHeaderRLP(db, hash, number)
+	//fmt.Println("read header rlp", data)
 	if len(data) == 0 {
 		return nil
 	}
@@ -385,6 +386,7 @@ func ReadHeader(db ethdb.Reader, hash common.Hash, number uint64) *types.Header 
 		log.Error("Invalid block header RLP", "hash", hash, "err", err)
 		return nil
 	}
+	//fmt.Println("decoded header", header)
 	return header
 }
 
@@ -399,7 +401,9 @@ func WriteHeader(db ethdb.KeyValueWriter, header *types.Header) {
 	WriteHeaderNumber(db, hash, number)
 
 	// Write the encoded header
+	fmt.Println("header before encoding", header)
 	data, err := rlp.EncodeToBytes(header)
+	fmt.Println("header after encoding", data)
 	if err != nil {
 		log.Crit("Failed to RLP encode header", "err", err)
 	}
@@ -789,6 +793,7 @@ func ReadBlock(db ethdb.Reader, hash common.Hash, number uint64) *types.Block {
 // WriteBlock serializes a block into the database, header and body separately.
 func WriteBlock(db ethdb.KeyValueWriter, block *types.Block) {
 	WriteBody(db, block.Hash(), block.NumberU64(), block.Body())
+	//fmt.Println("verkle", block.Header().VerkleProof)
 	WriteHeader(db, block.Header())
 }
 

@@ -1149,15 +1149,16 @@ func (w *worker) commitWork(interrupt *int32, noempty bool, timestamp int64) {
 func (w *worker) commit(env *environment, interval func(), update bool, start time.Time) error {
 	// Deep copy receipts here to avoid interaction between different tasks.
 	//receipts := copyReceipts(w.current.receipts)
-	s := w.current.state.Copy()
+	//s := w.current.state.Copy()
 	//block, err := w.engine.FinalizeAndAssemble(w.chain, w.current.header, s, w.current.txs, uncles, receipts)
 	e := env.copy()
+	s := e.state
 	block, err := w.engine.FinalizeAndAssemble(w.chain, e.header, e.state, e.txs, e.unclelist(), e.receipts)
 	if err != nil {
 		return err
 	}
 
-	if tr := w.current.original.GetTrie(); tr.IsVerkle() {
+	if tr := e.state.GetTrie(); tr.IsVerkle() {
 		vtr := tr.(*trie.VerkleTrie)
 		keys := s.Witness().Keys()
 		kvs := s.Witness().KeyVals()
