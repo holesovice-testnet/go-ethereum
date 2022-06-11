@@ -386,7 +386,8 @@ func ReadHeader(db ethdb.Reader, hash common.Hash, number uint64) *types.Header 
 		log.Error("Invalid block header RLP", "hash", hash, "err", err)
 		return nil
 	}
-	//fmt.Println("decoded header", header)
+	//fmt.Println("verkle proof", header.VerkleProof)
+	//fmt.Println("verkle keys", header.VerkleKeyVals)
 	return header
 }
 
@@ -401,9 +402,9 @@ func WriteHeader(db ethdb.KeyValueWriter, header *types.Header) {
 	WriteHeaderNumber(db, hash, number)
 
 	// Write the encoded header
-	fmt.Println("header before encoding", header)
+	//fmt.Println("header before encoding", header)
 	data, err := rlp.EncodeToBytes(header)
-	fmt.Println("header after encoding", data)
+	//fmt.Println("header after encoding", data)
 	if err != nil {
 		log.Crit("Failed to RLP encode header", "err", err)
 	}
