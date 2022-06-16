@@ -1,15 +1,33 @@
 ## Holesovice testnet
 
 Rebase of verkle trie enabled geth (https://github.com/gballet/go-ethereum) to a latest master.
-Curently PoW can be run and blocks are produced, txs are being confirmed. Verkle data is added to blocks
+Curently PoW can be run and blocks are produced, txs are being confirmed. Verkle data is added to blocks.
 
 *ToDo*: Switch `selfDestruct` to `send`
 
 To run:
 1. Build geth: `make geth`
-2. Edit `genesis.json` with list of genesys addresses and alocations
-3. Generate genesis: `build/bin/geth init genesis.json --datadir=[DATA_DIR]`
-4. Run miner: `build/bin/geth --mine --miner.etherbase=[ADDRESS] --miner.threads=1 --datadir=[DATA_DIR] --http --http.api=net,eth --http.corsdomain=* --http.vhosts=*`
+2. (optional) Edit `genesis.json` with list of genesis addresses and their allocations (see below)
+3. Generate genesis: `./build/bin/geth init genesis.json --datadir=[DATA_DIR]`
+4. Run miner: `./build/bin/geth --mine --miner.etherbase=[ADDRESS] --miner.threads=1 --datadir=[DATA_DIR] --http --http.api=net,eth --http.corsdomain=* --http.vhosts=*`
+
+The section of the `genesis.json` file to edit is:
+```
+  "alloc": {
+    "0x0000000000000000000000000000000000000000": {
+      "balance": "0x40000000000000000000"
+    }
+```
+You can add other addresses, to make it like this, for example, granting tokens to address `0x84a9f9748E435d31bb30A368Ff11ecD0922EC7Cc`:
+```
+  "alloc": {
+    "0x0000000000000000000000000000000000000000": {
+      "balance": "0x40000000000000000000",
+    "0x84a9f9748E435d31bb30A368Ff11ecD0922EC7Cc": {
+      "balance": "0x40000000000000000000"
+    }
+```
+
 
 ## Go Ethereum
 
