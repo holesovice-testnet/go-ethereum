@@ -1,15 +1,15 @@
 ## Holesovice testnet
 
 Rebase of verkle trie enabled geth (https://github.com/gballet/go-ethereum) to a latest master.
-Curently PoW can be run and blocks are produced, txs are being confirmed. Verkle data is added to blocks
+Curently PoW can be run and blocks are produced, txs are being confirmed. Verkle data is added to blocks.
 
 *ToDo*: Switch `selfDestruct` to `send`
 
 To run:
 1. Build geth: `make geth`
-2. Edit `genesis.json` with list of genesys addresses and alocations
-3. Generate genesis: `build/bin/geth init genesis.json --datadir=[DATA_DIR]`
-4. Run miner: `build/bin/geth --mine --miner.etherbase=[ADDRESS] --miner.threads=1 --datadir=[DATA_DIR] --http --http.api=net,eth --http.corsdomain=* --http.vhosts=*`
+2. (optional) Edit `genesis.json` with list of genesis addresses and their allocations (see below)
+3. Generate genesis: `./build/bin/geth init genesis.json --datadir=[DATA_DIR]`
+4. Run miner: `./build/bin/geth --mine --miner.etherbase=[ADDRESS] --miner.threads=1 --datadir=[DATA_DIR] --http --http.api=net,eth --http.corsdomain=* --http.vhosts=*`
 
 ## Go Ethereum
 
