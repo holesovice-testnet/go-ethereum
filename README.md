@@ -11,24 +11,6 @@ To run:
 3. Generate genesis: `./build/bin/geth init genesis.json --datadir=[DATA_DIR]`
 4. Run miner: `./build/bin/geth --mine --miner.etherbase=[ADDRESS] --miner.threads=1 --datadir=[DATA_DIR] --http --http.api=net,eth --http.corsdomain=* --http.vhosts=*`
 
-The section of the `genesis.json` file to edit is:
-```
-  "alloc": {
-    "0x0000000000000000000000000000000000000000": {
-      "balance": "0x40000000000000000000"
-    }
-```
-You can add other addresses, to make it like this, for example, granting tokens to address `0x84a9f9748E435d31bb30A368Ff11ecD0922EC7Cc`:
-```
-  "alloc": {
-    "0x0000000000000000000000000000000000000000": {
-      "balance": "0x40000000000000000000",
-    "0x84a9f9748E435d31bb30A368Ff11ecD0922EC7Cc": {
-      "balance": "0x40000000000000000000"
-    }
-```
-
-
 ## Go Ethereum
 
 Official Golang implementation of the Ethereum protocol.
