@@ -39,7 +39,7 @@ Then save and close and continue.
 ### Run Local Devnet
 
 ```
-./build/bin/geth --mine --miner.etherbase=0xBfd826F430C41Db28e158642d8f3Db5E52CDd8a5 --miner.threads=1 --datadir=/home/ubuntu/.verkle --http --http.addr 0.0.0.0 --http.api=net,eth --http.corsdomain=* --http.vhosts=*
+./build/bin/geth --mine --miner.etherbase=0xBfd826F430C41Db28e158642d8f3Db5E52CDd8a5 --miner.threads=1 --datadir=/home/ubuntu/.verkle --http --http.addr 0.0.0.0 --http.api=net,eth --http.corsdomain="*" --http.vhosts="*"
 ```
 
 Note: you probably want to replace the `--miner.etherbase` address to one that you control.
